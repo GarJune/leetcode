@@ -8,7 +8,7 @@ package cn.garjun.tencent;
  */
 public class SortList {
   public static ListNode sortList(ListNode head) {
-    if(head == null){
+    if (head == null) {
       return null;
     }
     int length = 0;
@@ -17,7 +17,7 @@ public class SortList {
       length++;
       temp = temp.next;
     }
-    return partition(head,0,length-1);
+    return partition(head, 0, length - 1);
   }
 
   public static ListNode partition(ListNode head, int start, int end) {
@@ -29,58 +29,60 @@ public class SortList {
         ListNode listNode = head;
         head = head.next;
         head.next = listNode;
+        head.next.next = null;
       }
       return head;
     }
-    int middle = (start + end) / 2 ;
+    int middle = (start + end) / 2;
     ListNode nextHead = head;
     int current = start;
-    while (current < middle + 1) {
+    while (current < middle) {
       nextHead = nextHead.next;
       current++;
     }
+    ListNode secondHead = nextHead.next;
+    nextHead.next = null;
     ListNode first = partition(head, start, middle);
-    ListNode second = partition(nextHead, middle + 1, end);
-    return merge(first,second);
+    ListNode second = partition(secondHead, middle + 1, end);
+    return merge(first, second);
   }
-  public ListNode merge(ListNode first,ListNode second){
-    ListNode head ;
-    if(first.val < second.val){
+
+  public static ListNode merge(ListNode first, ListNode second) {
+    ListNode head;
+    if (first.val < second.val) {
       head = first;
       first = first.next;
-    }else{
+    } else {
       head = second;
       second = second.next;
     }
     ListNode result = head;
-    while (first != null && second != null){
-      if(first.val < second.val){
+    while (first != null && second != null) {
+      if (first.val < second.val) {
         head.next = first;
         first = first.next;
         head = head.next;
-      }else {
+      } else {
         head.next = second;
         second = second.next;
         head = head.next;
       }
     }
-    while (first != null){
+    while (first != null) {
       head.next = first;
       first = first.next;
       head = head.next;
     }
-    while (second != null){
+    while (second != null) {
       head.next = second;
       second = second.next;
       head = head.next;
     }
     return result;
-
   }
 
-
   public static void main(String[] args) {
-    int[] nums = new int[] {4,2,1,3};
+    int[] nums = new int[] {};
     ListNode listNode = buildList(nums);
     listNode = sortList(listNode);
     while (listNode != null) {
